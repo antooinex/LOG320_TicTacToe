@@ -47,6 +47,27 @@ class Board
     	
     }
 
+	public showBoard(){
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < 3; i++) {
+			sb.append("|");
+			for (int j = 0; j < 3; j++) {
+				if (plateau[i][j] == EMPTY) {
+					sb.append("_");
+				}
+				if (plateau[i][j] == X) {
+					sb.append("X");
+				}
+				if (plateau[i][j] == O) {
+					sb.append("O");
+				}
+				sb.append("|");
+			}
+			sb.append("\n");
+		}
+
+	}
+
     // Place la pièce 'mark' sur le plateau, à la
     // position spécifiée dans Move
     //
