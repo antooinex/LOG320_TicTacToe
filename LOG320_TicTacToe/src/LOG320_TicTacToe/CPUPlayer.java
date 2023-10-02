@@ -9,6 +9,9 @@ import java.util.ArrayList;
 class CPUPlayer
 {
 
+	private Mark mark;
+	
+	
     // Contient le nombre de noeuds visités (le nombre
     // d'appel à la fonction MinMax ou Alpha Beta)
     // Normalement, la variable devrait être incrémentée
@@ -18,14 +21,14 @@ class CPUPlayer
     // Le constructeur reçoit en paramètre le
     // joueur MAX (X ou O)
     public CPUPlayer(Mark cpu){
-
+    	this.mark = cpu;
     }
 
     // Ne pas changer cette méthode
     public int  getNumOfExploredNodes(){
         return numExploredNodes;
     }
-/*
+
     // Retourne la liste des coups possibles.  Cette liste contient
     // plusieurs coups possibles si et seuleument si plusieurs coups
     // ont le même score.
@@ -42,5 +45,4 @@ class CPUPlayer
         numExploredNodes = 0;
 
     }
-*/
 }

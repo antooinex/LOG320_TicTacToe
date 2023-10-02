@@ -22,50 +22,25 @@ class Board
     	printBoard();
     }
     
-    public void printBoard() {
-    	StringBuilder sb = new StringBuilder();
-    	sb.append(this.board[0][0]);
-    	sb.append(" | ");
-    	sb.append(this.board[0][1]);
-    	sb.append(" | ");
-    	sb.append(this.board[0][2]);
-    	System.out.println(sb);
-    	
-    	sb.append(this.board[1][0]);
-    	sb.append(" | ");
-    	sb.append(this.board[1][1]);
-    	sb.append(" | ");
-    	sb.append(this.board[1][2]);
-    	System.out.println(sb);
-    	
-    	sb.append(this.board[2][0]);
-    	sb.append(" | ");
-    	sb.append(this.board[2][1]);
-    	sb.append(" | ");
-    	sb.append(this.board[2][2]);
-    	System.out.println(sb);
-    	
-    }
-
-	public showBoard(){
+	public void printBoard(){
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < 3; i++) {
 			sb.append("|");
 			for (int j = 0; j < 3; j++) {
-				if (plateau[i][j] == EMPTY) {
-					sb.append("_");
+				if (this.board[i][j] == Mark.EMPTY) {
+					sb.append("-");
 				}
-				if (plateau[i][j] == X) {
+				if (board[i][j] == Mark.X) {
 					sb.append("X");
 				}
-				if (plateau[i][j] == O) {
+				if (board[i][j] == Mark.O) {
 					sb.append("O");
 				}
 				sb.append("|");
 			}
 			sb.append("\n");
 		}
-
+		System.out.println(sb);
 	}
 
     // Place la pièce 'mark' sur le plateau, à la
