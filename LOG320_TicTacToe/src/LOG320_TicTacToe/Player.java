@@ -19,7 +19,7 @@ public class Player {
 	}
 	
 	public void setMark(String choice) {
-		if(choice.equals("X")) {
+		if(choice.equalsIgnoreCase("X")) {
 			this.mark = Mark.X;
 		}
 		else {

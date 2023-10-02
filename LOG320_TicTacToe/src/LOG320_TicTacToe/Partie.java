@@ -17,17 +17,80 @@ public class Partie {
 		
 		Scanner scanner = new Scanner(System.in);
 		String markChoice = "null";
-		while(!markChoice.equals("X") && !markChoice.equals("O")) {
+		while(!markChoice.equalsIgnoreCase("X") && !markChoice.equalsIgnoreCase("O")) {
 			System.out.println("Veuillez choisir votre symbole, X ou O :");
 			markChoice = scanner.nextLine();
 		}
 		J1.setMark(markChoice);
-		System.out.println("Vous jouerez en tant que "+J1.printMark()+".");
+		System.out.println(J1.getName()+", vous jouez en tant que "+J1.printMark()+".");
 		
 		//création du Joueur 2 (CPU)
-		//CPUPlayer CPU = new CPUPlayer();
+		CPUPlayer CPU;
+		if(J1.getMark()==Mark.X) {
+			CPU = new CPUPlayer(Mark.O);
+		}
+		else {
+			CPU = new CPUPlayer(Mark.X);
+		}
 		
-		System.out.println(plateau.evaluate(J1.getMark()));
+		System.out.println("Le CPU joue contre vous en tant que "+CPU.printMark()+".");
+		
+		//boucle des tours de jeu tant que personne n'a gagné
+		String tempRowStr = "-1";
+		String tempColStr = "-1";
+		boolean validMove = false;
+		Move move = new Move();
+		Mark gagnant = Mark.EMPTY;
+		while(gagnant == Mark.EMPTY) {
+			while(!validMove) {
+				while(!tempRowStr.equals("1") && !tempRowStr.equals("2") && !tempRowStr.equals("3")) {
+					System.out.println("Entrez la ligne où placer votre "+ J1.printMark()+" (1, 2 ou 3) :");
+					tempRowStr = scanner.nextLine();
+					switch(tempRowStr) {
+						case "1":
+							move.setRow(0);
+							break;
+						case "2":
+							move.setRow(1);
+							break;
+						case "3":
+							move.setRow(2);
+							break;
+						default: 
+							move.setRow(-1);
+					}
+				}
+				while(!tempColStr.equals("1") && !tempColStr.equals("2") && !tempColStr.equals("3")) {
+					System.out.println("Entrez la colonne où placer votre "+ J1.printMark()+" sur la ligne "+tempRowStr+" (1, 2 ou 3) :");
+					tempColStr = scanner.nextLine();
+					switch(tempColStr) {
+						case "1":
+							move.setCol(0);
+							break;
+						case "2":
+							move.setCol(1);
+							break;
+						case "3":
+							move.setCol(2);
+							break;
+						default: 
+							move.setCol(-1);
+					}
+				}
+				if(plateau.getMark(move.getRow(), move.getCol()) == Mark.EMPTY) {
+					validMove = true;
+				}
+				else {
+					System.out.println("Cette case est déjà occupée.");
+					tempRowStr = "-1";
+					tempColStr = "-1";
+				}
+			}
+			
+			System.out.println(J1.getName()+", vous venez de jouer un "+J1.printMark()+" en ("+(move.getRow()+1)+","+(move.getCol()+1)+").");
+			plateau.play(move, J1.getMark());
+			plateau.printBoard();
+			break; //TODO : remplacer ce break par le tour du CPU
+		}
 	}
-
 }

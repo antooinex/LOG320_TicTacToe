@@ -24,10 +24,10 @@ class Move
     }
 
     public void setRow(int r){
-        row = r;
+        this.row = r;
     }
 
     public void setCol(int c){
-        col = c;
+        this.col = c;
     }
 }

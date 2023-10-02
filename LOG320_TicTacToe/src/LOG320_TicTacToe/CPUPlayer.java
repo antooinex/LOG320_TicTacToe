@@ -28,6 +28,23 @@ class CPUPlayer
     public int  getNumOfExploredNodes(){
         return numExploredNodes;
     }
+    
+	public String printMark() {
+		if(this.mark == Mark.X) {
+			return "X";
+		}
+		else if(this.mark == Mark.O){
+			return "O";
+		}
+		else {
+			return "null";
+		}
+	}
+	
+	public Mark getMark() {
+		return this.mark;
+	}
+    
 /*
 
     // Retourne la liste des coups possibles.  Cette liste contient

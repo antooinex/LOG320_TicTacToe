@@ -49,8 +49,7 @@ class Board
     //
     // Ne pas changer la signature de cette méthode
     public void play(Move m, Mark mark){
-
-
+    	this.board[m.getRow()][m.getCol()] = mark;
     }
 
 
@@ -92,4 +91,9 @@ class Board
 		if (winnerIs!=mark && winnerIs!=Mark.EMPTY){return -100;}
 		else {return 0;}
     }
+    
+    public Mark getMark(int row, int col) {
+    	return this.board[row][col];
+    }
+    
 }
