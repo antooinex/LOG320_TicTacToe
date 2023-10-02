@@ -25,7 +25,7 @@ class CPUPlayer
     public int  getNumOfExploredNodes(){
         return numExploredNodes;
     }
-
+/*
     // Retourne la liste des coups possibles.  Cette liste contient
     // plusieurs coups possibles si et seuleument si plusieurs coups
     // ont le même score.
@@ -42,5 +42,5 @@ class CPUPlayer
         numExploredNodes = 0;
 
     }
-
+*/
 }
