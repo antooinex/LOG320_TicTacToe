@@ -13,7 +13,7 @@ class CPUPlayer
 	
 	
     // Contient le nombre de noeuds visités (le nombre
-    // d'appel à la fonction MinMax ou Alpha Beta)
+    // d'appels à la fonction MinMax ou Alpha Beta)
     // Normalement, la variable devrait être incrémentée
     // au début de votre MinMax ou Alpha Beta.
     private int numExploredNodes;
@@ -28,6 +28,7 @@ class CPUPlayer
     public int  getNumOfExploredNodes(){
         return numExploredNodes;
     }
+/*
 
     // Retourne la liste des coups possibles.  Cette liste contient
     // plusieurs coups possibles si et seuleument si plusieurs coups
@@ -44,5 +45,5 @@ class CPUPlayer
     public ArrayList<Move> getNextMoveAB(Board board){
         numExploredNodes = 0;
 
-    }
+    }*/
 }

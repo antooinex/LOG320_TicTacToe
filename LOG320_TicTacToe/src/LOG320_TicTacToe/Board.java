@@ -57,7 +57,39 @@ class Board
     //          -100 pour une défaite
     //           0   pour un match nul
     // Ne pas changer la signature de cette méthode
-    //public int evaluate(Mark mark){
+    public int evaluate(Mark mark){
+		enum winnerIs=EMPTY;
 
-    //}
+		//une ligne gagnante
+		for (int i = 0; i < 3; i++) {
+			if(plateau[i][0]==plateau[i][1] && plateau[i][1]==plateau[i][2]){
+				winnerIs=plateau[i][0];
+				break;
+			}
+		}
+
+		//une colonne gagnante
+		for (int i = 0; i < 3; i++) {
+			if(plateau[0][i]==plateau[1][i] && plateau[1][i]==plateau[2][i]){
+				winnerIs=plateau[0][i];
+				break;
+			}
+		}
+
+		//diagonale \ gagnante
+		if(plateau[0][0]==plateau[1][1] && plateau[1][1]==plateau[2][2]){
+			winnerIs=plateau[1][1];
+			break;
+		}
+
+		//diagonale / gagnante
+		if(plateau[0][2]==plateau[1][1] & plateau[1][1]==plateau[2][0]){
+			winnerIs=plateau[1][1];
+			break;
+		}
+
+		if (winnerIs==mark){return 100;}
+		if (winnerIs!=mark && winnerIs!=EMPTY){return -100;}
+		else {return 0;}
+    }
 }

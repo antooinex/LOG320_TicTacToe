@@ -1,6 +1,6 @@
 package LOG320_TicTacToe;
 
-enum Mark{ //commenter test
+enum Mark{
         X,
         O,
         EMPTY

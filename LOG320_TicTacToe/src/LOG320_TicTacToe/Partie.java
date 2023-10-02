@@ -26,7 +26,7 @@ public class Partie {
 		
 		//création du Joueur 2 (CPU)
 		//CPUPlayer CPU = new CPUPlayer();
-		
+		showBoard();
 	}
 
 }
