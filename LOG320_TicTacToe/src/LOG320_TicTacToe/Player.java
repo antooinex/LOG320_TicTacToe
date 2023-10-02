@@ -38,4 +38,8 @@ public class Player {
 			return "null";
 		}
 	}
+	
+	public Mark getMark() {
+		return this.mark;
+	}
 }

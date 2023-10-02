@@ -26,7 +26,8 @@ public class Partie {
 		
 		//création du Joueur 2 (CPU)
 		//CPUPlayer CPU = new CPUPlayer();
-		showBoard();
+		
+		System.out.println(plateau.evaluate(J1.getMark()));
 	}
 
 }
