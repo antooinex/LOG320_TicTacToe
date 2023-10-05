@@ -90,7 +90,11 @@ public class Partie {
 			System.out.println(J1.getName()+", vous venez de jouer un "+J1.printMark()+" en ("+(move.getRow()+1)+","+(move.getCol()+1)+").");
 			plateau.play(move, J1.getMark());
 			plateau.printBoard();
-			break; //TODO : remplacer ce break par le tour du CPU
+			
+			//tour du CPU
+			System.out.println("\nLe CPU commence son tour avec Max.");
+			CPU.play(plateau, true);
+			break;
 		}
 	}
 }

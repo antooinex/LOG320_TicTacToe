@@ -1,6 +1,8 @@
 package LOG320_TicTacToe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 // IMPORTANT: Il ne faut pas changer la signature des méthodes
 // de cette classe, ni le nom de la classe.
@@ -63,4 +65,61 @@ class CPUPlayer
         numExploredNodes = 0;
 
     }*/
+	
+	public void play(Board b, boolean MinMax) {
+		int min = 0;
+		int max = 0;
+		//définition de la liste des sous-arbres à créer et explorer
+		List<Board> boardsList = new ArrayList<Board>();
+		
+		//boucle pour trouver chaque case vide du tableau original
+    	for(int i=0; i<3; i+=1) {
+    		for(int j=0; j<3; j+=1) {
+    			if(b.getMark(i, j) == Mark.EMPTY) {
+    				//si la case est vide, copie du plateau original
+    				Board copiedBoard = new Board(b);
+    				
+    				//ajout du signe du CPU à l'emplacement de la case vide de la copie
+    				if(MinMax) {
+    					copiedBoard.play(new Move(i, j), this.mark);
+    				}
+    				else {
+    					if(this.mark == Mark.X) {
+    						copiedBoard.play(new Move(i, j), Mark.O);
+    					}
+    					else {
+    						copiedBoard.play(new Move(i, j), Mark.X);
+    					}
+    				}
+    				    				
+    				//ajout de la copie avec signe du CPU à la liste à explorer
+    				boardsList.add(copiedBoard);
+    			}
+    		}	
+    	}
+
+		//boucle parmi les plateaux imaginés
+		Iterator<Board> it = boardsList.iterator();
+		while(it.hasNext()) {
+			//affichage des plateaux imaginés
+			Board noeud = it.next();
+			System.out.println("Plateau imaginé par le CPU :");
+			noeud.printBoard();
+			
+			//évaluation des plateaux imaginés pour savoir si on continue à imaginer
+			//conditions pour continuer : le plateau n'est pas plein et l'évaluation est de 0
+			max = noeud.evaluate(this.getMark());
+			System.out.println("évalué à "+max+" pour "+this.getMark());
+			
+			//appel récursif à la méthode play() pour continuer à imaginer des plateaux
+			if(MinMax && !noeud.isFull() && max == 0) {
+				System.out.println("\nLe CPU continue avec Min.");
+				this.play(noeud, false);
+			}
+			else if (!MinMax && !noeud.isFull() && max == 0){
+				System.out.println("\nLe CPU continue avec Max.");
+				this.play(noeud, true);
+			}
+		}
+	}
 }
