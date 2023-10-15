@@ -51,12 +51,79 @@ class CPUPlayer
     // Retourne la liste des coups possibles.  Cette liste contient
     // plusieurs coups possibles si et seuleument si plusieurs coups
     // ont le même score.
-    public ArrayList<Move> getNextMoveMinMax(Board board)
+    /*public ArrayList<Move> getNextMoveMinMax(Board board)
     {
     	this.nextMoveMinMax.clear();
     	numExploredNodes = 0;
     	this.play(board, true, 0);
     	return this.nextMoveMinMax;
+    }*/
+    
+    public ArrayList<Move> getNextMoveMinMax(Board board) {
+        int bestScore = Integer.MIN_VALUE;
+        Move bestMove = null;
+
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+
+        // Loop through all empty positions on the board
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board.getMark(i, j) == Mark.EMPTY) {
+                    possibleMoves.add(new Move(i, j));
+                }
+            }
+        }
+
+        // Evaluate each possible move
+        for (Move move : possibleMoves) {
+            Board copiedBoard = new Board(board);
+            copiedBoard.play(move, this.getMark());
+
+            // Use the Minimax algorithm to compute the score for this move
+            int score = minimax(copiedBoard, 0, false, this.getMark());
+
+            // Update the best move if needed
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = move;
+            }
+        }
+
+        ArrayList<Move> bestMoves = new ArrayList<>();
+        bestMoves.add(bestMove);
+        return bestMoves;
+    }
+    
+    private int minimax(Board board, int depth, boolean isMaximizing, Mark currentPlayerMark) {
+        // Base cases: game over or maximum depth reached
+        int eval = board.evaluate(currentPlayerMark);
+        if (eval == 100 || eval == -100 || depth >= 9) {
+            return eval;
+        }
+
+        int bestScore = isMaximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+
+        // Loop through all empty positions on the board
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board.getMark(i, j) == Mark.EMPTY) {
+                    Board copiedBoard = new Board(board);
+                    copiedBoard.play(new Move(i, j), currentPlayerMark);
+
+                    // Recursive call for the next depth
+                    int score = minimax(copiedBoard, depth + 1, !isMaximizing, currentPlayerMark);
+
+                    // Update the best score
+                    if (isMaximizing) {
+                        bestScore = Math.max(bestScore, score);
+                    } else {
+                        bestScore = Math.min(bestScore, score);
+                    }
+                }
+            }
+        }
+
+        return bestScore;
     }
     
     // Retourne la liste des coups possibles.  Cette liste contient
@@ -67,7 +134,7 @@ class CPUPlayer
         return null;
     }
 	
-	public boolean play(Board b, boolean MinMax, int profondeur) {
+	/*public boolean play(Board b, boolean MinMax, int profondeur) {
 		int eval = 0;
 		//définition de la liste des sous-arbres à créer et explorer
 		List<Board> boardsList = new ArrayList<Board>();
@@ -166,7 +233,7 @@ class CPUPlayer
     	}
 		return move;
 	}
-	
+	*/
 	public void addNextMoveAB(Move m) {
 		this.nextMoveMinMax.add(m);
 	}

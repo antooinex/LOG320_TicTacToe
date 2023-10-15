@@ -1,5 +1,7 @@
 package LOG320_TicTacToe;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Partie {
@@ -33,6 +35,7 @@ public class Partie {
 			CPU = new CPUPlayer(Mark.X);
 		}
 		
+		ArrayList<Move> CPUMoves = new ArrayList<Move>();
 		Move CPUMove;
 		
 		System.out.println("Le CPU joue contre vous en tant que "+CPU.printMark()+".");
@@ -42,7 +45,6 @@ public class Partie {
 		String tempColStr = "-1";
 		boolean validMove = false;
 		boolean tourJ1 = true;
-		boolean tourCPU = false;
 		Move move = new Move();
 		Mark gagnant = Mark.EMPTY;
 		while(gagnant == Mark.EMPTY) {
@@ -103,20 +105,26 @@ public class Partie {
 			else if(!tourJ1) {
 				//tour du CPU
 				//System.out.println("\nLe CPU commence son tour avec Max.");
-				CPUMove = CPU.getNextMoveMinMax(plateau).get(0);
+				CPUMoves = CPU.getNextMoveMinMax(plateau);
+				Random r = new Random();
+				int low = 0;
+				int high = CPUMoves.size();
+				int result = r.nextInt(high-low) + low;
+				CPUMove = CPUMoves.get(result);
 				plateau.play(CPUMove, CPU.getMark());
 				System.out.println("\nLe CPU joue un "+CPU.printMark()+" en ("+(CPUMove.getRow()+1)+","+(CPUMove.getCol()+1)+").");
 				plateau.printBoard();
+				CPUMoves.clear();
 			}
 			
 			switch(plateau.evaluate(J1.getMark())) {
 				case 100:
 					gagnant = J1.getMark();
-					System.out.println("Gagnant : "+J1.getName()+" avec le signe "+J1.getMark()+" !");
+					System.out.println("Le gagnant est "+J1.getName()+" avec le signe "+J1.getMark()+" !");
 					break;
 				case -100:
 					gagnant = CPU.getMark();
-					System.out.println("Gagnant : "+J1.getName()+" avec le signe "+J1.getMark()+" !");
+					System.out.println("Le CPU gagne avec le signe "+CPU.getMark()+" !");
 					break;
 				default: 
 					if(tourJ1) {
