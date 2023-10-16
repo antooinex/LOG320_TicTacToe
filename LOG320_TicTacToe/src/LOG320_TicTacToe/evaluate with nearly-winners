@@ -1,0 +1,99 @@
+   public int evaluate(Mark mark){
+		int gagnant=-1;
+    	
+		//une ligne gagnante (ou presque)
+		for (int i = 0; i < 3; i++) {
+			if(this.board[i][0]==this.board[i][1] && this.board[i][1]==this.board[i][2]){
+				this.winnerIs=this.board[i][0];
+				gagnant=1;
+				break;
+			}
+			if(this.board[i][0]==this.board[i][1] && this.board[i][2]==Mark.EMPTY){
+				this.winnerIs=this.board[i][0];
+				gagnant=3; //2 tiers d'un gagnant trouvés
+				break;
+			}
+			if(this.board[i][1]==this.board[i][2] && this.board[i][0]==Mark.EMPTY){
+				this.winnerIs=this.board[i][1];
+				gagnant=3; //2 tiers d'un gagnant trouvés
+				break;
+			}
+			if(this.board[i][0]==this.board[i][2] && this.board[i][1]==Mark.EMPTY){
+				this.winnerIs=this.board[i][0];
+				gagnant=3; //2 tiers d'un gagnant trouvés
+				break;
+			}
+		}
+
+		//une colonne gagnante (ou presque)
+		for (int i = 0; i < 3; i++) {
+			if(this.board[0][i]==this.board[1][i] && this.board[1][i]==this.board[2][i]){
+				this.winnerIs=this.board[0][i];
+				gagnant=1;
+				break;
+			}
+			if(this.board[0][i]==this.board[1][i] || this.board[2][i]==Mark.EMPTY){
+				this.winnerIs=this.board[0][i];
+				gagnant=3; //2 tiers d'un gagnant trouvés
+				break;
+			}
+			if(this.board[1][i]==this.board[2][i] || this.board[0][i]==Mark.EMPTY){
+				this.winnerIs=this.board[1][i];
+				gagnant=3; //2 tiers d'un gagnant trouvés
+				break;
+			}
+			if(this.board[0][i]==this.board[2][i] || this.board[1][i]==Mark.EMPTY){
+				this.winnerIs=this.board[0][i];
+				gagnant=3; //2 tiers d'un gagnant trouvés
+				break;
+			}
+		}
+
+		//diagonale \ gagnante
+		if(this.board[0][0]==this.board[1][1] && this.board[1][1]==this.board[2][2]){
+			this.winnerIs=this.board[1][1];
+			gagnant=1;
+		}
+
+		//diagonale \ presque gagnante
+		if(this.board[0][0]==this.board[1][1] && this.board[2][2]==Mark.EMPTY){
+			this.winnerIs=this.board[0][0];
+			gagnant=3; //2 tiers d'un gagnant trouvés
+		}
+		if(this.board[0][0]==this.board[2][2] && this.board[1][1]==Mark.EMPTY){
+			this.winnerIs=this.board[0][0];
+			gagnant=3; //2 tiers d'un gagnant trouvés
+		}
+		if(this.board[2][2]==this.board[1][1] && this.board[0][0]==Mark.EMPTY){
+			this.winnerIs=this.board[1][1];
+			gagnant=3; //2 tiers d'un gagnant trouvés
+		}
+
+		//diagonale / gagnante
+		if(this.board[0][2]==this.board[1][1] && this.board[1][1]==this.board[2][0]){
+			this.winnerIs=this.board[1][1];
+			gagnant=1;
+		}
+
+		//diagonale / presque gagnante
+		if(this.board[0][2]==this.board[1][1] && this.board[2][0]==Mark.EMPTY){
+			this.winnerIs=this.board[1][1];
+			gagnant=3;//2 tiers d'un gagnant trouvés
+		}
+		if(this.board[1][1]==this.board[2][0] && this.board[0][2]==Mark.EMPTY){
+			this.winnerIs=this.board[1][1];
+			gagnant=3;//2 tiers d'un gagnant trouvés
+		}
+		if(this.board[0][2]==this.board[2][0] && this.board[1][1]==Mark.EMPTY){
+			this.winnerIs=this.board[2][0];
+			gagnant=3;//2 tiers d'un gagnant trouvés
+		}
+
+		if (this.winnerIs==mark && gagnant==1){System.out.println(gagnant+"with"+100);return 100;}
+		if (this.winnerIs==Mark.EMPTY && gagnant==1){System.out.println(gagnant+"with"+0);return 0;} //draw
+		if (this.winnerIs!=mark && this.winnerIs!=Mark.EMPTY && gagnant==1){System.out.println(gagnant+"with"+-100);return -100;}
+		if (this.winnerIs==Mark.EMPTY && gagnant==1){System.out.println(gagnant+"with"+0);return 0;} //draw
+		if (this.winnerIs==mark && gagnant==3){System.out.println(gagnant+"with"+50);return 50;}
+		if (this.winnerIs!=mark && this.winnerIs!=Mark.EMPTY && gagnant==3){System.out.println(gagnant+"with"+-50);return -50;}
+		else {return 0;}
+    }
