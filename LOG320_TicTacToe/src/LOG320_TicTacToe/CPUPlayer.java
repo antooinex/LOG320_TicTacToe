@@ -51,79 +51,13 @@ class CPUPlayer
     // Retourne la liste des coups possibles.  Cette liste contient
     // plusieurs coups possibles si et seuleument si plusieurs coups
     // ont le même score.
-    /*public ArrayList<Move> getNextMoveMinMax(Board board)
+    public ArrayList<Move> getNextMoveMinMax(Board board)
     {
     	this.nextMoveMinMax.clear();
     	numExploredNodes = 0;
     	this.play(board, true, 0);
+    	System.out.println(numExploredNodes);
     	return this.nextMoveMinMax;
-    }*/
-    
-    public ArrayList<Move> getNextMoveMinMax(Board board) {
-        int bestScore = Integer.MIN_VALUE;
-        Move bestMove = null;
-
-        ArrayList<Move> possibleMoves = new ArrayList<>();
-
-        // Loop through all empty positions on the board
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board.getMark(i, j) == Mark.EMPTY) {
-                    possibleMoves.add(new Move(i, j));
-                }
-            }
-        }
-
-        // Evaluate each possible move
-        for (Move move : possibleMoves) {
-            Board copiedBoard = new Board(board);
-            copiedBoard.play(move, this.getMark());
-
-            // Use the Minimax algorithm to compute the score for this move
-            int score = minimax(copiedBoard, 0, false, this.getMark());
-
-            // Update the best move if needed
-            if (score > bestScore) {
-                bestScore = score;
-                bestMove = move;
-            }
-        }
-
-        ArrayList<Move> bestMoves = new ArrayList<>();
-        bestMoves.add(bestMove);
-        return bestMoves;
-    }
-    
-    private int minimax(Board board, int depth, boolean isMaximizing, Mark currentPlayerMark) {
-        // Base cases: game over or maximum depth reached
-        int eval = board.evaluate(currentPlayerMark);
-        if (eval == 100 || eval == -100 || depth >= 9) {
-            return eval;
-        }
-
-        int bestScore = isMaximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-
-        // Loop through all empty positions on the board
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board.getMark(i, j) == Mark.EMPTY) {
-                    Board copiedBoard = new Board(board);
-                    copiedBoard.play(new Move(i, j), currentPlayerMark);
-
-                    // Recursive call for the next depth
-                    int score = minimax(copiedBoard, depth + 1, !isMaximizing, currentPlayerMark);
-
-                    // Update the best score
-                    if (isMaximizing) {
-                        bestScore = Math.max(bestScore, score);
-                    } else {
-                        bestScore = Math.min(bestScore, score);
-                    }
-                }
-            }
-        }
-
-        return bestScore;
     }
     
     // Retourne la liste des coups possibles.  Cette liste contient
@@ -134,8 +68,10 @@ class CPUPlayer
         return null;
     }
 	
-	/*public boolean play(Board b, boolean MinMax, int profondeur) {
+	public int play(Board b, boolean max, int profondeur) {
 		int eval = 0;
+		int subEval = 0;
+		int bestScore = 0;
 		//définition de la liste des sous-arbres à créer et explorer
 		List<Board> boardsList = new ArrayList<Board>();
 		
@@ -147,7 +83,7 @@ class CPUPlayer
     				Board copiedBoard = new Board(b);
     				
     				//ajout du signe du CPU à l'emplacement de la case vide de la copie
-    				if(MinMax) {
+    				if(max) {
     					copiedBoard.play(new Move(i, j), this.mark);
     				}
     				else {
@@ -176,48 +112,73 @@ class CPUPlayer
 			//évaluation des plateaux imaginés pour savoir si on continue à imaginer
 			//conditions pour continuer : le plateau n'est pas plein et l'évaluation est de 0
 			eval = noeud.evaluate(this.getMark());
+			numExploredNodes += 1;
 			//System.out.println("évalué à "+eval+" pour "+this.getMark());
 			
 			//appel récursif à la méthode play() pour continuer à imaginer des plateaux
-			if(MinMax && !noeud.isFull() && eval == 0) {
+			if(max && !noeud.isFull() && eval == 0) {
 				//System.out.println("\nLe CPU continue avec Min.");
 				numExploredNodes += 1;
-				profondeur +=1;
-				if(this.play(noeud, false, profondeur)) {
+				subEval = this.play(noeud, false, profondeur+1);
+				if(subEval==100) {
 					//System.out.println(profondeur);
-					if(profondeur == 1) {
-						addNextMoveAB(noeudToMove(b, noeud));
+					if(profondeur == 0) {
+						this.nextMoveMinMax.add(noeudToMove(b, noeud));
+						bestScore = 100;
 					}
 					else {
-						return true;
+						return 100;
 					}
 				}
-				
+				else if(subEval == 50) {
+					if(profondeur == 0) {
+						if(bestScore < 100) {
+							this.nextMoveMinMax.add(noeudToMove(b, noeud));
+							bestScore = 50;
+						}
+					}
+					else {
+						return 50;
+					}
+				}
 			}
-			else if (!MinMax && !noeud.isFull() && eval == 0){
+			else if (!max && !noeud.isFull() && eval == 0){
 				//System.out.println("\nLe CPU continue avec Max.");
 				numExploredNodes += 1;
-				//profondeur +=1;
-				if(this.play(noeud, true, profondeur)) {
+				subEval = this.play(noeud, true, profondeur+1);
+				if(subEval==100) {
+					//System.out.println(profondeur);
 					if(profondeur == 0) {
-						addNextMoveAB(noeudToMove(b, noeud));
+						this.nextMoveMinMax.add(noeudToMove(b, noeud));
+						bestScore = 100;
 					}
 					else {
-						return true;
+						return 100;
 					}
 				}
+				else if(subEval == 50) {
+					if(profondeur == 0) {
+						if(bestScore < 100) {
+							this.nextMoveMinMax.add(noeudToMove(b, noeud));
+							bestScore = 50;
+						}
+					}
+					else {
+						return 50;
+					}
+				}
+			}
+			else if(eval == 50) {
+				//System.out.println("trouvé 50");
+				return 50;
 			}
 			else if(eval == 100) {
 				//System.out.println("trouvé 100");
-				return true;
-			}
-			else if(eval == -100) {
-				//System.out.println("trouvé -100");
-				return false;
+				return 100;
 			}
 		}
 		//System.out.println("rien trouvé");
-		return false;
+		return 0;
 	}
 	
 	public Move noeudToMove(Board plateau, Board b) {
@@ -232,9 +193,5 @@ class CPUPlayer
     		}
     	}
 		return move;
-	}
-	*/
-	public void addNextMoveAB(Move m) {
-		this.nextMoveMinMax.add(m);
 	}
 }

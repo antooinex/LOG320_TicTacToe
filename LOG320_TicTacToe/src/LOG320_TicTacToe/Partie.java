@@ -110,7 +110,12 @@ public class Partie {
 				int low = 0;
 				int high = CPUMoves.size();
 				int result = r.nextInt(high-low) + low;
-				CPUMove = CPUMoves.get(result);
+				if(CPUMoves.size()!=1) {
+					CPUMove = CPUMoves.get(result);
+				}
+				else {
+					CPUMove = CPUMoves.get(0);
+				}
 				plateau.play(CPUMove, CPU.getMark());
 				System.out.println("\nLe CPU joue un "+CPU.printMark()+" en ("+(CPUMove.getRow()+1)+","+(CPUMove.getCol()+1)+").");
 				plateau.printBoard();
@@ -126,6 +131,11 @@ public class Partie {
 					gagnant = CPU.getMark();
 					System.out.println("Le CPU gagne avec le signe "+CPU.getMark()+" !");
 					break;
+				case 0:
+					if(plateau.isFull()) {
+						gagnant = CPU.getMark();
+						System.out.println("Égalité !");
+					}
 				default: 
 					if(tourJ1) {
 						tourJ1 = false;
